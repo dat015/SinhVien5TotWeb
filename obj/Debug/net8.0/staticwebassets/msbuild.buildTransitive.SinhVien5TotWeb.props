@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\SinhVien5TotWeb.props" />
+</Project>

@@ -1,0 +1,157 @@
+@model SinhVien5TotWeb.Models.Application
+@{
+    ViewData["Title"] = "Chi tiết hồ sơ";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-file-alt me-2"></i>Chi tiết hồ sơ Sinh viên 5 Tốt
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                        </div>
+                    }
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <h6 class="fw-bold mb-3">Thông tin sinh viên</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Họ tên:</strong> @Model.Student.FullName</p>
+                            <p><strong>Mã số sinh viên:</strong> @Model.Student.StudentId</p>
+                            <p><strong>Khoa:</strong> @Model.Student.Faculty</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Lớp:</strong> @Model.Student.Class</p>
+                            <p><strong>Năm học:</strong> @Model.AcademicYear</p>
+                            <p><strong>Trạng thái:</strong>
+                                @switch (Model.Status)
+                                {
+                                    case ApplicationStatus.Pending:
+                                        <span class="badge bg-warning">Đang chờ duyệt</span>
+                                        break;
+                                    case ApplicationStatus.Approved:
+                                        <span class="badge bg-success">Đã duyệt</span>
+                                        break;
+                                    case ApplicationStatus.Rejected:
+                                        <span class="badge bg-danger">Không đạt</span>
+                                        break;
+                                    case ApplicationStatus.SupplementRequested:
+                                        <span class="badge bg-info">Cần bổ sung</span>
+                                        break;
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold mb-3">Tiêu chí đăng ký</h6>
+                    <ul class="list-group mb-4">
+                        @foreach (var criterion in Model.ApplicationCriteria)
+                        {
+                            <li class="list-group-item">
+                                <strong>@criterion.Criterion.Name</strong>: @criterion.Criterion.Description
+                            </li>
+                        }
+                    </ul>
+
+                    <h6 class="fw-bold mb-3">Minh chứng</h6>
+                    <div class="row g-3 mb-4">
+                        @foreach (var evidence in Model.Evidences)
+                        {
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">@evidence.Title</h6>
+                                        <p class="card-text">@evidence.Description</p>
+                                        <a href="@evidence.FilePath" target="_blank"
+                                            class="btn btn-sm btn-outline-primary">Xem minh chứng</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <h6 class="fw-bold mb-3">Điểm số và nhận xét</h6>
+                    <table class="table table-bordered mb-4">
+                        <thead>
+                            <tr>
+                                <th>Tiêu chí</th>
+                                <th>Cán bộ</th>
+                                <th>Điểm</th>
+                                <th>Nhận xét</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var score in Model.Scores)
+                            {
+                                <tr>
+                                    <td>@score.Criterion.Name</td>
+                                    <td>@score.Officer.FullName</td>
+                                    <td>@(score.Score > 0 ? score.Score.ToString() : "Chưa chấm")</td>
+                                    <td>@score.Comment</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+
+                    @if (ViewBag.OfficerRole == OfficerRole.Scorer)
+                    {
+                        <h6 class="fw-bold mb-3">Chấm điểm</h6>
+                        <form asp-action="ScoreApplication" method="post">
+                            @foreach (var score in Model.Scores.Where(s => s.Officer.Id ==
+                                                    int.Parse(User.FindFirst("OfficerId")?.Value ?? "0") && s.Score == 0))
+                            {
+                                <input type="hidden" name="Id" value="@score.Id" />
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>@score.Criterion.Name</strong></label>
+                                    <input type="number" name="Score" class="form-control" min="@score.Criterion.MinScore"
+                                        max="@score.Criterion.MaxScore" required />
+                                    <textarea name="Comment" class="form-control mt-2" placeholder="Nhận xét"
+                                        required></textarea>
+                                </div>
+                            }
+                            <button type="submit" class="btn btn-primary">Gửi điểm</button>
+                        </form>
+                    }
+                    @if (ViewBag.OfficerRole == OfficerRole.Approver && Model.Status == ApplicationStatus.Pending)
+                    {
+                        <h6 class="fw-bold mb-3">Xét duyệt</h6>
+                        <form asp-action="MakeDecision" method="post">
+                            <input type="hidden" name="applicationId" value="@Model.ApplicationId" />
+                            <div class="mb-3">
+                                <label class="form-label">Quyết định</label>
+                                <select name="decisionStatus" class="form-select" required>
+                                    <option value="Approved">Duyệt</option>
+                                    <option value="Rejected">Từ chối</option>
+                                    <option value="Pending">Yêu cầu bổ sung</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Lý do</label>
+                                <textarea name="reason" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Gửi quyết định</button>
+                        </form>
+                    }
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <a asp-action="Applications" class="btn btn-light">Quay lại</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

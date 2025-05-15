@@ -1,0 +1,305 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SinhVien5TotWeb.bundle.scp.css",
+      "PackagePath": "staticwebassets\\SinhVien5TotWeb.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\bootstrap"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\uploads\\evidences\\0ad26acc-14d2-47e1-a346-bbe83c71c3f0_NguyenThanhDat_CV_EN.pdf",
+      "PackagePath": "staticwebassets\\uploads\\evidences\\0ad26acc-14d2-47e1-a346-bbe83c71c3f0_NguyenThanhDat_CV_EN.pdf"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\uploads\\evidences\\1342cc78-1fef-4f41-9ee5-937aa349e7e4_NguyenThanhDat_CV_Dev.pdf",
+      "PackagePath": "staticwebassets\\uploads\\evidences\\1342cc78-1fef-4f41-9ee5-937aa349e7e4_NguyenThanhDat_CV_Dev.pdf"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\uploads\\evidences\\1628e897-2ad8-4ee4-93fc-a0ff4559ca6a_NguyenThanhDat_CV_EN.pdf",
+      "PackagePath": "staticwebassets\\uploads\\evidences\\1628e897-2ad8-4ee4-93fc-a0ff4559ca6a_NguyenThanhDat_CV_EN.pdf"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\uploads\\evidences\\1dd2bb4e-d184-450a-ade8-94184808bf02_NguyenThanhDat_CV_EN.pdf",
+      "PackagePath": "staticwebassets\\uploads\\evidences\\1dd2bb4e-d184-450a-ade8-94184808bf02_NguyenThanhDat_CV_EN.pdf"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\uploads\\evidences\\3102bad5-1961-48fa-95d8-c0c33672cea1_6351071016_HDHWS_LAB6 (1) (1) (1).pdf",
+      "PackagePath": "staticwebassets\\uploads\\evidences\\3102bad5-1961-48fa-95d8-c0c33672cea1_6351071016_HDHWS_LAB6 (1) (1) (1).pdf"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\uploads\\evidences\\45ad8fab-02d2-47e5-a6e0-971f7d1b86b3_NguyenThanhDat_CV_EN.pdf",
+      "PackagePath": "staticwebassets\\uploads\\evidences\\45ad8fab-02d2-47e5-a6e0-971f7d1b86b3_NguyenThanhDat_CV_EN.pdf"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\uploads\\evidences\\46b1e775-3cf6-47f7-93e1-342e7a3ea8ca_NguyenThanhDat_CV_EN.pdf",
+      "PackagePath": "staticwebassets\\uploads\\evidences\\46b1e775-3cf6-47f7-93e1-342e7a3ea8ca_NguyenThanhDat_CV_EN.pdf"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\uploads\\evidences\\7347805c-29a2-4a97-b8de-39aa482e9141_UML.pdf",
+      "PackagePath": "staticwebassets\\uploads\\evidences\\7347805c-29a2-4a97-b8de-39aa482e9141_UML.pdf"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\uploads\\evidences\\9d3a72d9-a5e0-46a1-96e0-f0e9d1d84baf_NguyenThanhDat_CV_Dev.pdf",
+      "PackagePath": "staticwebassets\\uploads\\evidences\\9d3a72d9-a5e0-46a1-96e0-f0e9d1d84baf_NguyenThanhDat_CV_Dev.pdf"
+    },
+    {
+      "Id": "C:\\Users\\Thao\\source\\C Sharp\\SinhVien5TotWeb\\wwwroot\\uploads\\evidences\\c16266f8-998c-4aa2-a422-b4c653c20226_NguyenThanhDat_CV_Dev.pdf",
+      "PackagePath": "staticwebassets\\uploads\\evidences\\c16266f8-998c-4aa2-a422-b4c653c20226_NguyenThanhDat_CV_Dev.pdf"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.SinhVien5TotWeb.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.SinhVien5TotWeb.props",
+      "PackagePath": "build\\SinhVien5TotWeb.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.SinhVien5TotWeb.props",
+      "PackagePath": "buildMultiTargeting\\SinhVien5TotWeb.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.SinhVien5TotWeb.props",
+      "PackagePath": "buildTransitive\\SinhVien5TotWeb.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

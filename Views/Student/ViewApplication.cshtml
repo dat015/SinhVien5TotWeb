@@ -1,0 +1,179 @@
+@model SinhVien5TotWeb.Models.Application
+@{
+    ViewData["Title"] = "Chi tiết hồ sơ";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-file-alt me-2"></i>Chi tiết hồ sơ
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">Thông tin chung</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th class="text-muted">Ngày nộp:</th>
+                                    <td>@Model.SubmissionDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-muted">Trạng thái:</th>
+                                    <td>
+                                        @{
+                                            var statusClass = Model.Status switch
+                                            {
+                                                ApplicationStatus.Pending => "warning",
+                                                ApplicationStatus.Approved => "success",
+                                                ApplicationStatus.Rejected => "danger",
+                                                ApplicationStatus.SupplementRequested => "info",
+                                                _ => "secondary"
+                                            };
+                                        }
+                                        <span class="badge bg-@statusClass">
+                                            @Model.Status
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-muted">Cấp độ:</th>
+                                    <td>@Model.CurrentLevel</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">Thông tin sinh viên</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th class="text-muted">Mã sinh viên:</th>
+                                    <td>@Model.Student.StudentId</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-muted">Họ tên:</th>
+                                    <td>@Model.Student.FullName</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-muted">Lớp:</th>
+                                    <td>@Model.Student.Class</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-muted">Khoa:</th>
+                                    <td>@Model.Student.Faculty</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3">Tiêu chí đăng ký</h6>
+                        <div class="row g-3">
+                            @foreach (var appCriterion in Model.ApplicationCriteria)
+                            {
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h6 class="card-title">@appCriterion.Criterion.Name</h6>
+                                            <p class="card-text text-muted small">@appCriterion.Criterion.Description</p>
+                                            <div class="mt-3">
+                                                <h6 class="small fw-bold">Minh chứng:</h6>
+                                                <ul class="list-unstyled mb-0">
+                                                    @foreach (var evidence in Model.Evidences.Where(e => e.Criterion.Id == appCriterion.Criterion.Id))
+                                                    {
+                                                        <li>
+                                                            <a href="@evidence.FilePath" target="_blank" class="text-decoration-none">
+                                                                <i class="fas fa-file-alt me-2"></i>
+                                                                @evidence.Title
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @if (Model.Scores.Any())
+                    {
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">Kết quả chấm điểm</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Tiêu chí</th>
+                                            <th>Cán bộ chấm</th>
+                                            <th>Điểm</th>
+                                            <th>Nhận xét</th>
+                                            <th>Ngày chấm</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var appCriterion in Model.ApplicationCriteria)
+                                        {
+                                            var scores = Model.Scores.Where(s => s.Criterion?.Id == appCriterion.Criterion?.Id).ToList();
+                                            <tr>
+                                                <td rowspan="@(scores.Count > 0 ? scores.Count : 1)">@appCriterion.Criterion?.Name</td>
+                                                @if (scores.Count > 0)
+                                                {
+                                                    var firstScore = scores.First();
+                                                    <td>@(firstScore.Officer?.FullName ?? "Chưa có cán bộ chấm")</td>
+                                                    <td>@firstScore.Score</td>
+                                                    <td>@firstScore.Comment</td>
+                                                    <td>@firstScore.ScoredAt.ToString("dd/MM/yyyy")</td>
+                                                }
+                                                else
+                                                {
+                                                    <td colspan="4" class="text-center">Chưa có kết quả chấm điểm</td>
+                                                }
+                                            </tr>
+                                            @for (int i = 1; i < scores.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td>@(scores[i].Officer?.FullName ?? "Chưa có cán bộ chấm")</td>
+                                                    <td>@scores[i].Score</td>
+                                                    <td>@scores[i].Comment</td>
+                                                    <td>@scores[i].ScoredAt.ToString("dd/MM/yyyy")</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a asp-action="ApplicationStatus" class="btn btn-light">
+                            <i class="fas fa-arrow-left me-2"></i>Quay lại
+                        </a>
+                        @if (Model.Status == ApplicationStatus.SupplementRequested)
+                        {
+                            <a asp-action="SupplementApplication" asp-route-id="@Model.ApplicationId" class="btn btn-warning">
+                                <i class="fas fa-plus me-2"></i>Bổ sung minh chứng
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+        });
+    </script>
+} 

@@ -1,0 +1,513 @@
+@model IEnumerable<SinhVien5TotWeb.Models.Application>
+@{
+    ViewData["Title"] = "Xét duyệt hồ sơ";
+
+    string GetStatusColor(SinhVien5TotWeb.Models.ApplicationStatus status)
+    {
+        return status switch
+        {
+            SinhVien5TotWeb.Models.ApplicationStatus.Pending => "warning",
+            SinhVien5TotWeb.Models.ApplicationStatus.SupplementRequested => "info",
+            SinhVien5TotWeb.Models.ApplicationStatus.Approved => "success",
+            SinhVien5TotWeb.Models.ApplicationStatus.Rejected => "danger",
+            _ => "secondary"
+        };
+    }
+
+    var officerRole = ViewBag.OfficerRole as SinhVien5TotWeb.Models.OfficerRole?;
+    var officerLevel = ViewBag.OfficerLevel as SinhVien5TotWeb.Models.ApplicationLevel?;
+    var allApplications = ViewBag.AllApplications as IEnumerable<SinhVien5TotWeb.Models.Application>;
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Xét duyệt hồ sơ</h2>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                <i class="fas fa-filter me-2"></i>Lọc
+            </button>
+            <button type="button" class="btn btn-outline-success" onclick="exportToExcel()">
+                <i class="fas fa-file-excel me-2"></i>Xuất Excel
+            </button>
+        </div>
+    </div>
+
+    @if (officerRole == SinhVien5TotWeb.Models.OfficerRole.Approver && officerLevel == SinhVien5TotWeb.Models.ApplicationLevel.Faculty)
+    {
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#pendingApplications">Hồ sơ chờ xét duyệt</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#allApplications">Tất cả hồ sơ</a>
+            </li>
+        </ul>
+    }
+
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="pendingApplications">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Mã SV</th>
+                                    <th>Họ và tên</th>
+                                    <th>Khoa</th>
+                                    <th>Lớp</th>
+                                    <th>Ngày nộp</th>
+                                    <th>Trạng thái</th>
+                                    <th>Điểm TB</th>
+                                    <th>Số điểm</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var app in Model)
+                                {
+                                    var scoreCount = app.Scores.Count(s => s.Score > 0 && s.CurrentLevel == app.CurrentLevel);
+                                    var requiredScores = app.CurrentLevel == SinhVien5TotWeb.Models.ApplicationLevel.Faculty ? 15 : 10;
+                                    var avgScore = app.Scores.Any(s => s.CurrentLevel == app.CurrentLevel) ? app.Scores.Where(s => s.CurrentLevel == app.CurrentLevel).Average(s => s.Score).ToString("N1") : "0";
+                                    <tr>
+                                        <td>@app.Student.StudentId</td>
+                                        <td>@app.Student.FullName</td>
+                                        <td>@app.Student.Faculty</td>
+                                        <td>@app.Student.Class</td>
+                                        <td>@app.SubmissionDate.ToString("dd/MM/yyyy")</td>
+                                        <td>
+                                            <span class="badge bg-@GetStatusColor(app.Status)">
+                                                @app.Status
+                                            </span>
+                                        </td>
+                                        <td>@avgScore</td>
+                                        <td>@scoreCount/@requiredScores</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-info" onclick="viewDetails(@app.ApplicationId)">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                @if (officerRole == SinhVien5TotWeb.Models.OfficerRole.Scorer)
+                                                {
+                                                    <button type="button" class="btn btn-sm btn-primary" onclick="scoreApplication(@app.ApplicationId)">
+                                                        <i class="fas fa-star"></i>
+                                                    </button>
+                                                }
+                                                @if (officerRole == SinhVien5TotWeb.Models.OfficerRole.Approver && scoreCount >= requiredScores)
+                                                {
+                                                    <button type="button" class="btn btn-sm btn-success" onclick="makeDecision(@app.ApplicationId)">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (officerRole == SinhVien5TotWeb.Models.OfficerRole.Approver && officerLevel == SinhVien5TotWeb.Models.ApplicationLevel.Faculty)
+        {
+            <div class="tab-pane fade" id="allApplications">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Mã SV</th>
+                                        <th>Họ và tên</th>
+                                        <th>Khoa</th>
+                                        <th>Lớp</th>
+                                        <th>Ngày nộp</th>
+                                        <th>Trạng thái</th>
+                                        <th>Điểm TB</th>
+                                        <th>Số điểm</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var app in allApplications)
+                                    {
+                                        var scoreCount = app.Scores.Count(s => s.Score > 0 && s.CurrentLevel == app.CurrentLevel);
+                                        var requiredScores = 15; // Cấp khoa yêu cầu 15 điểm
+                                        var avgScore = app.Scores.Any(s => s.CurrentLevel == app.CurrentLevel) ? app.Scores.Where(s => s.CurrentLevel == app.CurrentLevel).Average(s => s.Score).ToString("N1") : "0";
+                                        <tr>
+                                            <td>@app.Student.StudentId</td>
+                                            <td>@app.Student.FullName</td>
+                                            <td>@app.Student.Faculty</td>
+                                            <td>@app.Student.Class</td>
+                                            <td>@app.SubmissionDate.ToString("dd/MM/yyyy")</td>
+                                            <td>
+                                                <span class="badge bg-@GetStatusColor(app.Status)">
+                                                    @app.Status
+                                                </span>
+                                            </td>
+                                            <td>@avgScore</td>
+                                            <td>@scoreCount/@requiredScores</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-info" onclick="viewDetails(@app.ApplicationId)">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    @if (app.Status == SinhVien5TotWeb.Models.ApplicationStatus.Pending && scoreCount >= requiredScores)
+                                                    {
+                                                        <button type="button" class="btn btn-sm btn-success" onclick="makeDecision(@app.ApplicationId)">
+                                                            <i class="fas fa-check"></i>
+                                                        </button>
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Lọc hồ sơ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="filterForm">
+                    <div class="mb-3">
+                        <label class="form-label">Khoa</label>
+                        <select class="form-select" name="faculty">
+                            <option value="">Tất cả</option>
+                            <!-- TODO: Load faculties dynamically -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-select" name="status">
+                            <option value="">Tất cả</option>
+                            <option value="Pending">Chờ duyệt</option>
+                            <option value="SupplementRequested">Cần bổ sung</option>
+                            <option value="Approved">Đã duyệt</option>
+                            <option value="Rejected">Không đạt</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ngày nộp</label>
+                        <div class="input-group">
+                            <input type="date" class="form-control" name="fromDate">
+                            <span class="input-group-text">đến</span>
+                            <input type="date" class="form-control" name="toDate">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="applyFilter()">Áp dụng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Viewing Details -->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi tiết hồ sơ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="detailsContent">
+                <!-- Nội dung chi tiết sẽ được load qua AJAX -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Scoring -->
+<div class="modal fade" id="scoreModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chấm điểm hồ sơ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="scoreForm">
+                    <input type="hidden" name="applicationId" id="scoreApplicationId">
+                    <div class="mb-3">
+                        <label class="form-label">Danh sách tiêu chí</label>
+                        <div id="criteriaList">
+                            <!-- Tiêu chí và trường nhập điểm sẽ được thêm động -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="submitScore()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Making Decision -->
+<div class="modal fade" id="decisionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xét duyệt hồ sơ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="decisionForm">
+                    <input type="hidden" name="applicationId" id="decisionApplicationId">
+                    <div class="mb-3">
+                        <label class="form-label">Quyết định</label>
+                        <select class="form-select" name="decisionStatus" required>
+                            <option value="Approved">Duyệt</option>
+                            <option value="Rejected">Không đạt</option>
+                            <option value="Pending">Yêu cầu bổ sung</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Lý do</label>
+                        <textarea class="form-control" name="reason" rows="4"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="submitDecision()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Hiển thị chi tiết hồ sơ
+        function viewDetails(id) {
+            $.ajax({
+                url: `/Officer/ApplicationDetails/${id}`,
+                method: 'GET',
+                success: function (data) {
+                    const scoresByOfficer = {};
+                    data.scores.forEach(score => {
+                        const officerName = score.officer.fullName;
+                        if (!scoresByOfficer[officerName]) {
+                            scoresByOfficer[officerName] = [];
+                        }
+                        scoresByOfficer[officerName].push(score);
+                    });
+
+                    let scoresHtml = '';
+                    for (const officer in scoresByOfficer) {
+                        scoresHtml += `<p><strong>Cán bộ:</strong> ${officer}</p><ul>`;
+                        scoresByOfficer[officer].forEach(s => {
+                            scoresHtml += `<li>${s.criterion.name}: ${s.score} (Nhận xét: ${s.comment || 'Không có'})</li>`;
+                        });
+                        scoresHtml += `</ul>`;
+                    }
+
+                    $('#detailsContent').html(`
+                        <p><strong>Mã SV:</strong> ${data.student.studentId}</p>
+                        <p><strong>Họ và tên:</strong> ${data.student.fullName}</p>
+                        <p><strong>Khoa:</strong> ${data.student.faculty}</p>
+                        <p><strong>Lớp:</strong> ${data.student.class}</p>
+                        <p><strong>Ngày nộp:</strong> ${new Date(data.submissionDate).toLocaleDateString('vi-VN')}</p>
+                        <p><strong>Trạng thái:</strong> ${data.status}</p>
+                        <h6>Điểm số theo từng cán bộ:</h6>
+                        ${scoresHtml}
+                        <h6>Minh chứng:</h6>
+                        <ul>
+                            ${data.evidences.map(e => `<li>${e.fileName} (<a href="${e.fileUrl}" target="_blank">Xem</a>)</li>`).join('')}
+                        </ul>
+                    `);
+                    $('#detailsModal').modal('show');
+                },
+                error: function (xhr) {
+                    alert('Lỗi khi tải chi tiết hồ sơ: ' + (xhr.responseJSON?.message || 'Vui lòng thử lại.'));
+                }
+            });
+        }
+
+        // Mở modal chấm điểm và load tiêu chí
+        function scoreApplication(id) {
+            $.ajax({
+                url: `/Officer/GetCriteria/${id}`,
+                method: 'GET',
+                success: function (data) {
+                    if (data.message) {
+                        alert(data.message);
+                        return;
+                    }
+                    const criteriaList = $('#criteriaList');
+                    criteriaList.empty();
+                    data.forEach(criterion => {
+                        criteriaList.append(`
+                            <div class="mb-3 border p-3 rounded criterion-item">
+                                <label class="form-label fw-bold">${criterion.name} (Tối đa: ${criterion.maxScore})</label>
+                                <input type="hidden" name="CriterionId" value="${criterion.id}">
+                                <div class="mb-2">
+                                    <label class="form-label">Điểm (0-${criterion.maxScore})</label>
+                                    <input type="number" class="form-control score-input" step="0.1" min="0" max="${criterion.maxScore}" required>
+                                </div>
+                                <div>
+                                    <label class="form-label">Nhận xét</label>
+                                    <textarea class="form-control comment-input" rows="3"></textarea>
+                                </div>
+                            </div>
+                        `);
+                    });
+                    $('#scoreApplicationId').val(id);
+                    $('#scoreModal').modal('show');
+                },
+                error: function (xhr) {
+                    alert('Lỗi khi tải tiêu chí: ' + (xhr.responseJSON?.message || 'Vui lòng thử lại.'));
+                }
+            });
+        }
+
+        // Gửi điểm số
+        function submitScore() {
+            const applicationId = $('#scoreApplicationId').val();
+            const scores = [];
+
+            $('#criteriaList .criterion-item').each(function () {
+                const criterionId = $(this).find('input[name="CriterionId"]').val();
+                const score = parseFloat($(this).find('.score-input').val());
+                const comment = $(this).find('.comment-input').val() || '';
+
+                if (criterionId && !isNaN(score)) {
+                    scores.push({
+                        CriterionId: parseInt(criterionId),
+                        Score: score,
+                        Comment: comment
+                    });
+                }
+            });
+
+            if (scores.length === 0) {
+                alert('Vui lòng nhập điểm cho ít nhất một tiêu chí.');
+                return;
+            }
+
+            $.ajax({
+                url: `/Officer/ScoreApplication?applicationId=${applicationId}`,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(scores),
+                success: function () {
+                    $('#scoreModal').modal('hide');
+                    alert('Chấm điểm thành công!');
+                    location.reload();
+                },
+                error: function (xhr) {
+                    alert('Lỗi khi chấm điểm: ' + (xhr.responseJSON?.message || 'Vui lòng thử lại.'));
+                }
+            });
+        }
+
+        // Mở modal xét duyệt
+        function makeDecision(id) {
+            $('#decisionApplicationId').val(id);
+            $('#decisionForm')[0].reset();
+            $('#decisionModal').modal('show');
+        }
+
+        // Gửi quyết định xét duyệt
+        function submitDecision() {
+            const formData = $('#decisionForm').serialize();
+            $.ajax({
+                url: '/Officer/MakeDecision',
+                method: 'POST',
+                data: formData,
+                success: function () {
+                    $('#decisionModal').modal('hide');
+                    alert('Xét duyệt thành công!');
+                    location.reload();
+                },
+                error: function (xhr) {
+                    alert('Lỗi khi xét duyệt: ' + (xhr.responseJSON?.message || 'Vui lòng thử lại.'));
+                }
+            });
+        }
+
+        // Áp dụng bộ lọc
+        function applyFilter() {
+            const formData = $('#filterForm').serialize();
+            $.ajax({
+                url: '/Officer/FilterApplications',
+                method: 'GET',
+                data: formData,
+                success: function (data) {
+                    const tbody = $('#pendingApplications tbody');
+                    tbody.empty();
+                    data.forEach(app => {
+                        const scoreCount = app.scores.filter(s => s.score > 0).length;
+                        const requiredScores = app.currentLevel === 'Faculty' ? 15 : 10;
+                        const statusColor = {
+                            'Pending': 'warning',
+                            'SupplementRequested': 'info',
+                            'Approved': 'success',
+                            'Rejected': 'danger'
+                        }[app.status] || 'secondary';
+                        tbody.append(`
+                            <tr>
+                                <td>${app.student.studentId}</td>
+                                <td>${app.student.fullName}</td>
+                                <td>${app.student.faculty}</td>
+                                <td>${app.student.class}</td>
+                                <td>${new Date(app.submissionDate).toLocaleDateString('vi-VN')}</td>
+                                <td><span class="badge bg-${statusColor}">${app.status}</span></td>
+                                <td>${app.scores.length > 0 ? (app.scores.reduce((sum, s) => sum + s.score, 0) / app.scores.length).toFixed(1) : '0'}</td>
+                                <td>${scoreCount}/${requiredScores}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-info" onclick="viewDetails(${app.applicationId})">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        ${'@officerRole' === 'Scorer' ? `
+                                            <button type="button" class="btn btn-sm btn-primary" onclick="scoreApplication(${app.applicationId})">
+                                                <i class="fas fa-star"></i>
+                                            </button>
+                                        ` : ''}
+                                        ${'@officerRole' === 'Approver' && scoreCount >= requiredScores ? `
+                                            <button type="button" class="btn btn-sm btn-success" onclick="makeDecision(${app.applicationId})">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        ` : ''}
+                                    </div>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                    $('#filterModal').modal('hide');
+                },
+                error: function (xhr) {
+                    alert('Lỗi khi áp dụng bộ lọc: ' + (xhr.responseJSON?.message || 'Vui lòng thử lại.'));
+                }
+            });
+        }
+
+        // Xuất Excel
+        function exportToExcel() {
+            const formData = $('#filterForm').serialize();
+            window.location.href = '/Officer/ExportApplications?' + formData;
+        }
+    </script>
+}

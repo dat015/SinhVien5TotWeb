@@ -1,0 +1,279 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="mb-0">Xin chào, @User.Identity?.Name!</h4>
+                    <p class="text-muted">Chào mừng bạn đến với hệ thống Sinh viên 5 tốt</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Tổng số hồ sơ -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Tổng số hồ sơ</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.TotalApplications</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-file-alt fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hồ sơ chờ chấm điểm -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Chờ chấm điểm</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.PendingScoring</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clock fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hồ sơ chờ xét duyệt -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Chờ xét duyệt</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.PendingApproval</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hồ sơ đã xử lý -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Đã xử lý</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.ProcessedApplications</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hồ sơ cần xử lý -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Hồ sơ cần xử lý</h6>
+                    <a asp-action="Applications" class="btn btn-sm btn-primary">
+                        <i class="fas fa-list"></i> Xem tất cả
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>MSSV</th>
+                                    <th>Họ tên</th>
+                                    <th>Khoa</th>
+                                    <th>Ngày nộp</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.PendingApplications != null)
+                                {
+                                    foreach (var app in ViewBag.PendingApplications)
+                                    {
+                                        <tr>
+                                            <td>@app.Student.StudentId</td>
+                                            <td>@app.Student.FullName</td>
+                                            <td>@app.Student.Faculty</td>
+                                            <td>@app.SubmissionDate.ToString("dd/MM/yyyy")</td>
+                                            <td>
+                                                <span class="badge bg-@(app.Status switch {
+                                                    ApplicationStatus.Pending => "warning",
+                                                    ApplicationStatus.Approved => "success",
+                                                    ApplicationStatus.Rejected => "danger",
+                                                    ApplicationStatus.SupplementRequested => "info",
+                                                    _ => "secondary"
+                                                })">
+                                                    @app.Status
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a asp-action="ApplicationDetails" asp-route-id="@app.ApplicationId" 
+                                                       class="btn btn-sm btn-info">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    @if (User.IsInRole("Scorer"))
+                                                    {
+                                                        <a asp-action="ScoreApplication" asp-route-id="@app.ApplicationId" 
+                                                           class="btn btn-sm btn-warning">
+                                                            <i class="fas fa-star"></i>
+                                                        </a>
+                                                    }
+                                                    @if (User.IsInRole("Approver"))
+                                                    {
+                                                        <a asp-action="ReviewApplication" asp-route-id="@app.ApplicationId" 
+                                                           class="btn btn-sm btn-success">
+                                                            <i class="fas fa-check"></i>
+                                                        </a>
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thống kê -->
+    <div class="row">
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Thống kê hồ sơ theo khoa</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar">
+                        <canvas id="facultyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Phân bố trạng thái</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-pie pt-4">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Biểu đồ thống kê theo khoa
+        var facultyCtx = document.getElementById('facultyChart').getContext('2d');
+        var facultyChart = new Chart(facultyCtx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.FacultyLabels)),
+                datasets: [{
+                    label: 'Số hồ sơ',
+                    data: @Html.Raw(Json.Serialize(ViewBag.FacultyData)),
+                    backgroundColor: '#4e73df',
+                    borderColor: '#4e73df',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Biểu đồ phân bố trạng thái
+        var statusCtx = document.getElementById('statusChart').getContext('2d');
+        var statusChart = new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.StatusLabels)),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(ViewBag.StatusData)),
+                    backgroundColor: ['#4e73df', '#1cc88a', '#f6c23e', '#e74a3b'],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#dda20a', '#be2617'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        .border-left-primary {
+            border-left: 4px solid #4e73df !important;
+        }
+        .border-left-success {
+            border-left: 4px solid #1cc88a !important;
+        }
+        .border-left-info {
+            border-left: 4px solid #36b9cc !important;
+        }
+        .border-left-warning {
+            border-left: 4px solid #f6c23e !important;
+        }
+        .border-left-danger {
+            border-left: 4px solid #e74a3b !important;
+        }
+        .text-gray-300 {
+            color: #dddfeb !important;
+        }
+        .text-gray-800 {
+            color: #5a5c69 !important;
+        }
+        .chart-bar {
+            height: 300px;
+        }
+        .chart-pie {
+            height: 300px;
+        }
+    </style>
+} 

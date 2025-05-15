@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\SinhVien5TotWeb.props" />
+</Project>

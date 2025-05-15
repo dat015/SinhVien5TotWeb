@@ -1,0 +1,182 @@
+@{
+    ViewData["Title"] = "Báo cáo thống kê";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Báo cáo thống kê</h2>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-primary" onclick="refreshCharts()">
+                <i class="fas fa-sync-alt me-2"></i>Làm mới
+            </button>
+            <button type="button" class="btn btn-outline-success" onclick="exportReport()">
+                <i class="fas fa-file-pdf me-2"></i>Xuất PDF
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Tổng quan -->
+        <div class="col-md-3">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <h6 class="text-muted mb-2">Tổng số hồ sơ</h6>
+                    <h3 class="mb-0">@ViewBag.TotalApplications</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <h6 class="text-muted mb-2">Đã duyệt</h6>
+                    <h3 class="text-success mb-0">@ViewBag.ApprovedApplications</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <h6 class="text-muted mb-2">Chờ duyệt</h6>
+                    <h3 class="text-warning mb-0">@ViewBag.PendingApplications</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <h6 class="text-muted mb-2">Không đạt</h6>
+                    <h3 class="text-danger mb-0">@ViewBag.RejectedApplications</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Biểu đồ trạng thái -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Trạng thái hồ sơ</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biểu đồ theo khoa -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Hồ sơ theo khoa</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="facultyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Bảng thống kê chi tiết -->
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Thống kê chi tiết</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Khoa</th>
+                                    <th>Tổng số</th>
+                                    <th>Đã duyệt</th>
+                                    <th>Chờ duyệt</th>
+                                    <th>Không đạt</th>
+                                    <th>Tỷ lệ đạt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var stat in ViewBag.DetailedStats)
+                                {
+                                    <tr>
+                                        <td>@stat.Faculty</td>
+                                        <td>@stat.Total</td>
+                                        <td>@stat.Approved</td>
+                                        <td>@stat.Pending</td>
+                                        <td>@stat.Rejected</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" 
+                                                     style="width: @stat.ApprovalRate%">
+                                                    @stat.ApprovalRate%
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Khởi tạo biểu đồ
+        function initCharts() {
+            // Biểu đồ trạng thái
+            new Chart(document.getElementById('statusChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['Đã duyệt', 'Chờ duyệt', 'Không đạt'],
+                    datasets: [{
+                        data: [
+                            @ViewBag.ApprovedApplications,
+                            @ViewBag.PendingApplications,
+                            @ViewBag.RejectedApplications
+                        ],
+                        backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+                    }]
+                }
+            });
+
+            // Biểu đồ theo khoa
+            new Chart(document.getElementById('facultyChart'), {
+                type: 'bar',
+                data: {
+                    labels: @Html.Raw(Json.Serialize(ViewBag.Faculties)),
+                    datasets: [{
+                        label: 'Số hồ sơ',
+                        data: @Html.Raw(Json.Serialize(ViewBag.FacultyStats)),
+                        backgroundColor: '#007bff'
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function refreshCharts() {
+            // TODO: Implement refresh logic
+            location.reload();
+        }
+
+        function exportReport() {
+            // TODO: Implement PDF export
+        }
+
+        // Khởi tạo biểu đồ khi trang được tải
+        document.addEventListener('DOMContentLoaded', initCharts);
+    </script>
+} 
