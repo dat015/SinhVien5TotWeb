@@ -290,6 +290,9 @@ namespace SinhVien5TotWeb.Controllers
                 .Include(a => a.Student)
                 .Include(a => a.ApplicationCriteria)
                     .ThenInclude(ac => ac.Criterion)
+                .Include(a => a.ApplicationCriteria)
+                    .ThenInclude(ac => ac.Criterion.ScoringResults)
+                    .ThenInclude(sr => sr.Officer)
                 .Include(a => a.Evidences)
                 .Include(a => a.Scores)
                 .FirstOrDefaultAsync(a => a.ApplicationId == id && a.StudentId == studentId);
@@ -301,78 +304,135 @@ namespace SinhVien5TotWeb.Controllers
 
             return View(application);
         }
-
+        [HttpGet("/Student/SupplementApplication/{id}")]
         public async Task<IActionResult> SupplementApplication(int id)
         {
-            var studentId = int.Parse(User.FindFirst("StudentId")?.Value ?? "0");
+            var studentIdClaim = User.FindFirst("StudentId")?.Value;
+            if (string.IsNullOrEmpty(studentIdClaim) || !int.TryParse(studentIdClaim, out var studentId))
+            {
+                _logger.LogWarning("Invalid or missing StudentId claim for user.");
+                TempData["ErrorMessage"] = "Không thể xác định thông tin sinh viên. Vui lòng đăng nhập lại.";
+                return RedirectToAction(nameof(ApplicationStatus));
+            }
+
             var application = await _context.Applications
                 .Include(a => a.ApplicationCriteria)
                     .ThenInclude(ac => ac.Criterion)
                 .Include(a => a.Evidences)
                 .FirstOrDefaultAsync(a => a.ApplicationId == id && a.StudentId == studentId);
 
-            if (application == null || application.Status != Models.ApplicationStatus.SupplementRequested)
+            if (application == null)
             {
-                return NotFound();
+                _logger.LogWarning("Application ID: {ApplicationId} not found or not owned by student ID: {StudentId}", id, studentId);
+                TempData["ErrorMessage"] = "Hồ sơ không tồn tại hoặc bạn không có quyền truy cập.";
+                return RedirectToAction(nameof(ApplicationStatus));
+            }
+
+            if (application.Status != Models.ApplicationStatus.SupplementRequested && application.Status != Models.ApplicationStatus.Rejected)
+            {
+                _logger.LogWarning("Application ID: {ApplicationId} is not in SupplementRequested status. Current status: {Status}", id, application.Status);
+                TempData["ErrorMessage"] = "Hồ sơ không ở trạng thái cần bổ sung minh chứng.";
+                return RedirectToAction(nameof(ApplicationStatus));
             }
 
             return View(application);
         }
 
-        [HttpPost]
+        [HttpPost("/Student/SupplementApplication")]
         public async Task<IActionResult> SubmitSupplement(int id, Dictionary<int, List<IFormFile>> evidences)
         {
-            var studentId = int.Parse(User.FindFirst("StudentId")?.Value ?? "0");
+            var studentIdClaim = User.FindFirst("StudentId")?.Value;
+            if (string.IsNullOrEmpty(studentIdClaim) || !int.TryParse(studentIdClaim, out var studentId))
+            {
+                _logger.LogWarning("Invalid or missing StudentId claim for user.");
+                TempData["ErrorMessage"] = "Không thể xác định thông tin sinh viên. Vui lòng đăng nhập lại.";
+                return RedirectToAction(nameof(ApplicationStatus));
+            }
+
             var application = await _context.Applications
                 .Include(a => a.ApplicationCriteria)
                     .ThenInclude(ac => ac.Criterion)
                 .FirstOrDefaultAsync(a => a.ApplicationId == id && a.StudentId == studentId);
 
-            if (application == null || application.Status != Models.ApplicationStatus.SupplementRequested)
+            if (application == null)
             {
-                return NotFound();
+                _logger.LogWarning("Application ID: {ApplicationId} not found or not owned by student ID: {StudentId}", id, studentId);
+                TempData["ErrorMessage"] = "Hồ sơ không tồn tại hoặc bạn không có quyền truy cập.";
+                return RedirectToAction(nameof(ApplicationStatus));
+            }
+
+            if (application.Status != Models.ApplicationStatus.SupplementRequested && application.Status != Models.ApplicationStatus.Rejected)
+            {
+                _logger.LogWarning("Application ID: {ApplicationId} is not in SupplementRequested or Rejected status. Current status: {Status}", id, application.Status);
+                TempData["ErrorMessage"] = $"Hồ sơ hiện đang ở trạng thái {application.Status}. Chỉ hồ sơ ở trạng thái 'Yêu cầu bổ sung minh chứng' hoặc 'Bị từ chối' mới có thể bổ sung.";
+                return RedirectToAction(nameof(ApplicationStatus));
             }
 
             try
             {
-                if (evidences != null)
+                if (evidences != null && evidences.Any())
                 {
+                    bool hasValidFiles = false;
                     foreach (var evidenceGroup in evidences)
                     {
                         var criterionId = evidenceGroup.Key;
                         var files = evidenceGroup.Value;
 
+                        if (files == null || !files.Any()) continue;
+
                         foreach (var file in files)
                         {
-                            if (file != null && file.Length > 0)
+                            if (file == null || file.Length == 0) continue;
+
+                            // Validate file size (5MB) and type
+                            if (file.Length > 5 * 1024 * 1024)
                             {
-                                var uploadsDir = Path.Combine(_environment.WebRootPath, "Uploads", "evidences");
-                                if (!Directory.Exists(uploadsDir))
-                                {
-                                    Directory.CreateDirectory(uploadsDir);
-                                }
-
-                                var fileName = $"{Guid.NewGuid()}_{file.FileName}";
-                                var filePath = Path.Combine(uploadsDir, fileName);
-
-                                using (var stream = new FileStream(filePath, FileMode.Create))
-                                {
-                                    await file.CopyToAsync(stream);
-                                }
-
-                                var evidence = new Evidence
-                                {
-                                    Application = application,
-                                    Criterion = await _context.Criteria.FindAsync(criterionId),
-                                    Title = file.FileName,
-                                    FilePath = $"/Uploads/evidences/{fileName}",
-                                    Description = $"Minh chứng bổ sung cho tiêu chí {criterionId}",
-                                    CreatedAt = DateTime.UtcNow
-                                };
-
-                                await _context.Evidences.AddAsync(evidence);
+                                _logger.LogWarning("File {FileName} exceeds 5MB limit for application ID: {ApplicationId}", file.FileName, id);
+                                TempData["ErrorMessage"] = $"Tệp {file.FileName} vượt quá kích thước cho phép (5MB).";
+                                return View("SupplementApplication", application);
                             }
+
+                            if (!new[] { "image/jpeg", "image/png", "application/pdf" }.Contains(file.ContentType))
+                            {
+                                _logger.LogWarning("Invalid file type {FileType} for file {FileName} in application ID: {ApplicationId}", file.ContentType, file.FileName, id);
+                                TempData["ErrorMessage"] = $"Tệp {file.FileName} không đúng định dạng (chỉ chấp nhận JPEG, PNG, PDF).";
+                                return View("SupplementApplication", application);
+                            }
+
+                            var uploadsDir = Path.Combine(_environment.WebRootPath, "Uploads", "evidences");
+                            if (!Directory.Exists(uploadsDir))
+                            {
+                                Directory.CreateDirectory(uploadsDir);
+                            }
+
+                            var fileName = $"{Guid.NewGuid()}_{Path.GetFileName(file.FileName)}";
+                            var filePath = Path.Combine(uploadsDir, fileName);
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await file.CopyToAsync(stream);
+                            }
+
+                            var evidence = new Evidence
+                            {
+                                Application = application,
+                                Criterion = await _context.Criteria.FindAsync(criterionId),
+                                Title = Path.GetFileName(file.FileName),
+                                FilePath = $"/Uploads/evidences/{fileName}",
+                                Description = $"Minh chứng bổ sung cho tiêu chí {criterionId}",
+                                CreatedAt = DateTime.UtcNow
+                            };
+
+                            await _context.Evidences.AddAsync(evidence);
+                            hasValidFiles = true;
                         }
+                    }
+
+                    if (!hasValidFiles)
+                    {
+                        _logger.LogWarning("No valid evidence files provided for application ID: {ApplicationId}", id);
+                        TempData["ErrorMessage"] = "Vui lòng chọn ít nhất một tệp minh chứng hợp lệ để tải lên.";
+                        return View("SupplementApplication", application);
                     }
 
                     application.Status = Models.ApplicationStatus.Pending;
@@ -381,14 +441,20 @@ namespace SinhVien5TotWeb.Controllers
 
                     await _context.SaveChangesAsync();
                 }
+                else
+                {
+                    _logger.LogWarning("No evidence files provided for application ID: {ApplicationId}", id);
+                    TempData["ErrorMessage"] = "Vui lòng chọn ít nhất một tệp minh chứng để tải lên.";
+                    return View("SupplementApplication", application);
+                }
 
                 TempData["SuccessMessage"] = "Minh chứng bổ sung đã được nộp thành công!";
                 return RedirectToAction(nameof(ApplicationStatus));
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Lỗi khi nộp minh chứng bổ sung");
-                ModelState.AddModelError("", "Có lỗi xảy ra khi nộp minh chứng bổ sung. Vui lòng thử lại sau.");
+                _logger.LogError(ex, "Error submitting supplement for application ID: {ApplicationId}, student ID: {StudentId}", id, studentId);
+                TempData["ErrorMessage"] = "Có lỗi xảy ra khi nộp minh chứng bổ sung. Vui lòng thử lại sau.";
                 return View("SupplementApplication", application);
             }
         }

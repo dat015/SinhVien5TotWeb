@@ -17,7 +17,16 @@
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle me-2"></i>
                             Vui lòng chọn các tiêu chí bạn muốn đăng ký và tải lên các minh chứng tương ứng.
-                        </div>
+                        </div>@if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger">
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <div>@error.ErrorMessage</div>
+                                }
+                            </div>
+                        }
+
 
                         <div class="mb-4">
                             <h6 class="fw-bold mb-3">Chọn tiêu chí đăng ký</h6>
@@ -28,15 +37,18 @@
                                         <div class="card h-100">
                                             <div class="card-body">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="criteria" value="@criterion.Id" id="criterion_@criterion.Id">
+                                                    <input class="form-check-input" type="checkbox" name="criteria"
+                                                        value="@criterion.Id" id="criterion_@criterion.Id">
                                                     <label class="form-check-label" for="criterion_@criterion.Id">
                                                         <h6 class="card-title">@criterion.Name</h6>
                                                         <p class="card-text text-muted small">@criterion.Description</p>
                                                     </label>
                                                 </div>
-                                                <div class="mt-3 evidence-upload" id="evidence_@criterion.Id" style="display: none;">
+                                                <div class="mt-3 evidence-upload" id="evidence_@criterion.Id"
+                                                    style="display: none;">
                                                     <h6 class="small fw-bold">Minh chứng:</h6>
-                                                    <input type="file" name="evidences_@criterion.Id" class="form-control" multiple>
+                                                    <input type="file" name="evidences_@criterion.Id" class="form-control"
+                                                        multiple>
                                                 </div>
                                             </div>
                                         </div>
@@ -50,15 +62,15 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="achievements" name="achievements" 
-                                               placeholder="Thành tích nổi bật">
+                                        <input type="text" class="form-control" id="achievements" name="achievements"
+                                            placeholder="Thành tích nổi bật">
                                         <label for="achievements">Thành tích nổi bật</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="activities" name="activities" 
-                                               placeholder="Hoạt động tham gia">
+                                        <input type="text" class="form-control" id="activities" name="activities"
+                                            placeholder="Hoạt động tham gia">
                                         <label for="activities">Hoạt động tham gia</label>
                                     </div>
                                 </div>
@@ -82,8 +94,8 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function() {
-            $('input[type="checkbox"]').change(function() {
+        $(document).ready(function () {
+            $('input[type="checkbox"]').change(function () {
                 var criterionId = $(this).val();
                 var evidenceDiv = $('#evidence_' + criterionId);
                 if (this.checked) {
@@ -94,4 +106,4 @@
             });
         });
     </script>
-} 
+}

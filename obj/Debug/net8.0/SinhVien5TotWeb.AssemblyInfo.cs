@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SinhVien5TotWeb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0bc137bb38e07476c19067fcfa9360fca7bcc7e")]
 [assembly: System.Reflection.AssemblyProductAttribute("SinhVien5TotWeb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SinhVien5TotWeb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

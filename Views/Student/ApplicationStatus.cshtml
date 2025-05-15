@@ -13,6 +13,20 @@
                     </h5>
                 </div>
                 <div class="card-body">
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
                     @if (!Model.Any())
                     {
                         <div class="text-center py-4">
@@ -41,10 +55,10 @@
                                     @foreach (var application in Model)
                                     {
                                         <tr>
-                                            <td>@application.SubmissionDate.ToString("dd/MM/yyyy HH:mm")</td>
-                                            <td>@application.AcademicYear</td>
+                                            <td>@Html.DisplayFor(modelItem => application.SubmissionDate, "dd/MM/yyyy HH:mm")</td>
+                                            <td>@Html.DisplayFor(modelItem => application.AcademicYear)</td>
                                             <td>
-                                                @string.Join(", ", application.ApplicationCriteria.Select(ac => ac.Criterion.Name))
+                                                @Html.Raw(string.Join(", ", application.ApplicationCriteria.Select(ac => Html.Encode(ac.Criterion.Name))))
                                             </td>
                                             <td>
                                                 @{
@@ -56,24 +70,39 @@
                                                         ApplicationStatus.SupplementRequested => "info",
                                                         _ => "secondary"
                                                     };
+                                                    var statusTooltip = application.Status switch
+                                                    {
+                                                        ApplicationStatus.Rejected => application.RejectionCount < 2
+                                                            ? "Hồ sơ bị từ chối. Vui lòng bổ sung minh chứng hoặc liên hệ cán bộ."
+                                                            : "Hồ sơ bị từ chối quá số lần cho phép. Liên hệ cán bộ để biết thêm chi tiết.",
+                                                        ApplicationStatus.SupplementRequested => "Hồ sơ cần bổ sung minh chứng. Nhấn nút bổ sung để tải lên.",
+                                                        _ => application.Status.ToString()
+                                                    };
                                                 }
-                                                <span class="badge bg-@statusClass">
-                                                    @application.Status
+                                                <span class="badge bg-@statusClass" data-bs-toggle="tooltip" title="@statusTooltip">
+                                                    @Html.DisplayFor(modelItem => application.Status)
                                                 </span>
                                             </td>
-                                            <td>@application.CurrentLevel</td>
+                                            <td>@Html.DisplayFor(modelItem => application.CurrentLevel)</td>
                                             <td>
                                                 <div class="btn-group">
                                                     <a asp-action="ViewApplication" asp-route-id="@application.ApplicationId" 
-                                                       class="btn btn-sm btn-outline-primary">
+                                                       class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Xem chi tiết hồ sơ">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
-                                                    @if (application.Status == ApplicationStatus.SupplementRequested)
+                                                    @if (application.Status == ApplicationStatus.SupplementRequested || 
+                                                         (application.Status == ApplicationStatus.Rejected && application.RejectionCount < 2))
                                                     {
-                                                        <a asp-action="SupplementApplication" asp-route-id="@application.ApplicationId" 
-                                                           class="btn btn-sm btn-outline-warning">
+                                                        <a asp-controller="Student" asp-action="SupplementApplication" asp-route-id="@application.ApplicationId" 
+                                                           class="btn btn-sm btn-outline-warning" data-bs-toggle="tooltip" title="Bổ sung minh chứng">
                                                             <i class="fas fa-plus"></i>
                                                         </a>
+                                                    }
+                                                    @if (application.Status == ApplicationStatus.Rejected && application.RejectionCount >= 2)
+                                                    {
+                                                        <span class="text-danger small" data-bs-toggle="tooltip" title="Hồ sơ đã bị từ chối quá số lần cho phép.">
+                                                            <i class="fas fa-ban"></i>
+                                                        </span>
                                                     }
                                                 </div>
                                             </td>
@@ -93,10 +122,10 @@
     <script>
         $(document).ready(function() {
             // Initialize tooltips
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl)
+                return new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
     </script>
-} 
+}
