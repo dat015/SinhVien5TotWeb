@@ -28,7 +28,7 @@ namespace SinhVien5TotWeb.Models
         public Officer Officer { get; set; } = null!;
 
         [Required]
-        [Range(0, 100)]
+        [Range(0, 20, ErrorMessage = "Điểm số phải nằm trong khoảng từ 0 đến 20")]    
         [Display(Name = "Điểm số")]
         public double Score { get; set; }
         [Display(Name = "Cấp hiện tại")]

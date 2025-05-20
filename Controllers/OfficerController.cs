@@ -802,7 +802,7 @@ namespace SinhVien5TotWeb.Controllers
 
             return File(stream.ToArray(), "application/pdf", $"Report_{reportType}_{officerApplicationLevel}_{DateTime.UtcNow:yyyyMMdd}.pdf");
         }
-        [HttpGet]
+        [HttpGet("/Officer/ApplicationDetails/{id}")]
         public async Task<IActionResult> ApplicationDetails(int id)
         {
             var officerId = int.Parse(User.FindFirst("OfficerId")?.Value ?? "0");
@@ -850,6 +850,39 @@ namespace SinhVien5TotWeb.Controllers
                     fileUrl = e.FilePath
                 })
             });
+        }
+        [HttpGet("/Officer/ApplicationDetails1/{id}")]
+        public async Task<IActionResult> ApplicationDetails1(int id)
+        {
+            // Kiểm tra OfficerId từ claims
+            var officerId = int.Parse(User.FindFirst("OfficerId")?.Value ?? "0");
+            var officer = await _context.Officers.FirstOrDefaultAsync(o => o.Id == officerId);
+            if (officer == null)
+            {
+                return NotFound(new { message = "Không tìm thấy thông tin cán bộ." });
+            }
+
+            // Tải hồ sơ với dữ liệu liên quan
+            var application = await _context.Applications
+                .Include(a => a.Student)
+                .Include(a => a.Evidences)
+                .Include(a => a.Scores)
+                    .ThenInclude(s => s.Criterion)
+                .Include(a => a.Scores)
+                    .ThenInclude(s => s.Officer)
+                .Include(a => a.ApplicationCriteria)
+                    .ThenInclude(ac => ac.Criterion)
+                .AsSplitQuery() // Bật Split Query để tối ưu hóa
+                .FirstOrDefaultAsync(a => a.ApplicationId == id &&
+                                         a.CurrentLevel == MapOfficerLevelToApplicationLevel(officer.Level));
+
+            if (application == null)
+            {
+                return NotFound(new { message = "Không tìm thấy hồ sơ hoặc bạn không có quyền xem." });
+            }
+
+            // Trả về view với model là application
+            return View(application);
         }
         [HttpGet("/Officer/GetCriteria/{applicationId}")]
         public async Task<IActionResult> GetCriteria(int applicationId)
