@@ -959,7 +959,7 @@ namespace SinhVien5TotWeb.Controllers
         public int CriterionId { get; set; }
 
         [Required]
-        [Range(0, 100)]
+        [Range(0, 20)]
         public double Score { get; set; }
 
         [MaxLength(1000)]

@@ -24,7 +24,7 @@ namespace SinhVien5TotWeb.Models
         [Required(ErrorMessage = "Điểm tối đa là bắt buộc")]
         [Range(0, 100, ErrorMessage = "Điểm tối đa phải từ 0 đến 100")]
         [Display(Name = "Điểm tối đa")]
-        public int MaxScore { get; set; } = 100;
+        public int MaxScore { get; set; } = 20;
 
         public int MinScore { get; set; } = 0;
 

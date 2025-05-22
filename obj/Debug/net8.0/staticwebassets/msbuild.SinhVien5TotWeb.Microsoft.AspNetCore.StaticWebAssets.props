@@ -1040,6 +1040,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\1628e897-2ad8-4ee4-93fc-a0ff4559ca6a_NguyenThanhDat_CV_EN.pdf))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\1c433215-6615-4f4a-96bd-a5c4e7976777.docx))">
+      <SourceType>Package</SourceType>
+      <SourceId>SinhVien5TotWeb</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/SinhVien5TotWeb</BasePath>
+      <RelativePath>uploads/evidences/1c433215-6615-4f4a-96bd-a5c4e7976777.docx</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\1c433215-6615-4f4a-96bd-a5c4e7976777.docx))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\1dd2bb4e-d184-450a-ade8-94184808bf02_NguyenThanhDat_CV_EN.pdf))">
       <SourceType>Package</SourceType>
       <SourceId>SinhVien5TotWeb</SourceId>
@@ -1055,6 +1071,22 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\1dd2bb4e-d184-450a-ade8-94184808bf02_NguyenThanhDat_CV_EN.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\1ed5ef63-655a-4bbc-b978-130d0b0dcbcc.docx))">
+      <SourceType>Package</SourceType>
+      <SourceId>SinhVien5TotWeb</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/SinhVien5TotWeb</BasePath>
+      <RelativePath>uploads/evidences/1ed5ef63-655a-4bbc-b978-130d0b0dcbcc.docx</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\1ed5ef63-655a-4bbc-b978-130d0b0dcbcc.docx))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\26df449d-70f4-4303-b1e2-7965144622be_DEE.sql))">
       <SourceType>Package</SourceType>
@@ -1152,22 +1184,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\7347805c-29a2-4a97-b8de-39aa482e9141_UML.pdf))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\8f965a30-916b-48a5-b04a-818a03f703a3_Project.docx))">
-      <SourceType>Package</SourceType>
-      <SourceId>SinhVien5TotWeb</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/SinhVien5TotWeb</BasePath>
-      <RelativePath>uploads/evidences/8f965a30-916b-48a5-b04a-818a03f703a3_Project.docx</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\8f965a30-916b-48a5-b04a-818a03f703a3_Project.docx))</OriginalItemSpec>
-    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\9a01c2d5-229d-4c16-ad31-3e42a0dd87c1_DEE.sql))">
       <SourceType>Package</SourceType>
       <SourceId>SinhVien5TotWeb</SourceId>
@@ -1215,22 +1231,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\9d8faed7-19a9-427b-b121-014bb3d81c4b_Project.docx))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\a4905414-b056-400f-afbd-17fa00cf2fad.docx))">
-      <SourceType>Package</SourceType>
-      <SourceId>SinhVien5TotWeb</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/SinhVien5TotWeb</BasePath>
-      <RelativePath>uploads/evidences/a4905414-b056-400f-afbd-17fa00cf2fad.docx</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\a4905414-b056-400f-afbd-17fa00cf2fad.docx))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\evidences\b96791aa-2a60-4ba2-b1f5-b1f1b76b13ed_DEE.sql))">
       <SourceType>Package</SourceType>
